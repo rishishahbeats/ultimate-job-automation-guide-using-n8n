@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultimate Job Automation Guide Using n8n</title>
+    <meta
+      name="description"
+      content="A prismatic, holographic landing page for the Ultimate Job Automation Guide Using n8n."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-1: #050816;
+        --bg-2: #0a1226;
+        --chrome-1: rgba(255, 255, 255, 0.15);
+        --chrome-2: rgba(255, 255, 255, 0.35);
+        --text: rgba(245, 248, 255, 0.95);
+        --muted: rgba(220, 228, 255, 0.72);
+        --line: rgba(255, 255, 255, 0.18);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 20% 20%, rgba(132, 0, 255, 0.24), transparent 32%),
+          radial-gradient(circle at 80% 18%, rgba(0, 255, 240, 0.18), transparent 28%),
+          radial-gradient(circle at 85% 80%, rgba(255, 77, 196, 0.18), transparent 30%),
+          radial-gradient(circle at 18% 82%, rgba(77, 255, 190, 0.16), transparent 28%),
+          linear-gradient(160deg, #03050d 0%, #071126 45%, #03050d 100%);
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: -20%;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      body::before {
+        background:
+          conic-gradient(from 180deg at 50% 50%, rgba(255, 255, 255, 0.03), rgba(0, 255, 247, 0.08), rgba(255, 0, 200, 0.06), rgba(255, 255, 255, 0.03));
+        filter: blur(80px);
+        animation: drift 18s linear infinite;
+        opacity: 0.9;
+      }
+
+      body::after {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 80px 80px;
+        mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+        opacity: 0.55;
+      }
+
+      .shell {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background:
+          radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.92), transparent 24%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(93, 225, 255, 0.32) 22%, rgba(255, 105, 237, 0.6) 52%, rgba(255, 255, 255, 0.14) 76%, rgba(77, 255, 190, 0.8));
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 12px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      .pill {
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .hero {
+        position: relative;
+        margin-top: 22px;
+        border-radius: calc(var(--radius) + 12px);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
+          linear-gradient(180deg, rgba(10, 17, 38, 0.7), rgba(5, 8, 22, 0.85));
+        backdrop-filter: blur(24px);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .hero::before {
+        background:
+          linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.08) 18%, transparent 36%),
+          radial-gradient(circle at top right, rgba(0, 255, 247, 0.24), transparent 20%),
+          radial-gradient(circle at bottom left, rgba(255, 0, 200, 0.16), transparent 24%);
+        mix-blend-mode: screen;
+      }
+
+      .hero::after {
+        inset: 12px;
+        border-radius: calc(var(--radius) + 4px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+      }
+
+      .hero-grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 24px;
+        padding: 42px;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.92rem;
+        width: fit-content;
+      }
+
+      .spark {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fff, #6ffcff, #ff7be8);
+        box-shadow: 0 0 18px rgba(111, 252, 255, 0.95);
+      }
+
+      h1 {
+        margin: 20px 0 16px;
+        font-size: clamp(3rem, 7vw, 6.2rem);
+        line-height: 0.94;
+        letter-spacing: -0.06em;
+        text-wrap: balance;
+      }
+
+      .gradient-text {
+        background: linear-gradient(110deg, #fff 0%, #8cf9ff 18%, #ef7cff 38%, #fff4b8 58%, #9dfff4 76%, #ffffff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 10px 30px rgba(255, 255, 255, 0.16));
+      }
+
+      .lead {
+        max-width: 62ch;
+        margin: 0 0 28px;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+        line-height: 1.7;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 20px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+      }
+
+      .btn-primary {
+        color: #03111f;
+        background: linear-gradient(135deg, #f6ffff 0%, #8dfbff 22%, #f490ff 52%, #fff0b8 74%, #ffffff 100%);
+        box-shadow: 0 16px 36px rgba(139, 220, 255, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.34) inset;
+      }
+
+      .btn-secondary {
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(16px);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .stat-panel {
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+
+      .glass-card {
+        position: relative;
+        padding: 20px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 24px 50px rgba(0, 0, 0, 0.28);
+        overflow: hidden;
+      }
+
+      .glass-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(140deg, transparent 0%, rgba(255, 255, 255, 0.18) 18%, transparent 38%);
+        transform: translateX(-100%);
+        animation: sheen 6s ease-in-out infinite;
+      }
+
+      .stat {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin: 0;
+      }
+
+      .stat strong {
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1;
+        background: linear-gradient(120deg, #ffffff, #8efcff, #ff8cf5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .stat span {
+        color: var(--muted);
+      }
+
+      .stat-copy {
+        margin: 8px 0 0;
+        color: rgba(240, 244, 255, 0.84);
+        line-height: 1.6;
+      }
+
+      .section {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .feature {
+        padding: 22px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.04));
+        backdrop-filter: blur(16px);
+        box-shadow: var(--shadow);
+        min-height: 220px;
+      }
+
+      .feature h3 {
+        margin: 14px 0 10px;
+        font-size: 1.14rem;
+      }
+
+      .feature p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .icon {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        font-size: 1.2rem;
+      }
+
+      .workflow {
+        margin-top: 22px;
+        padding: 28px;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05)),
+          radial-gradient(circle at top left, rgba(141, 251, 255, 0.12), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(255, 140, 245, 0.12), transparent 30%);
+        box-shadow: var(--shadow);
+      }
+
+      .workflow h2 {
+        margin: 0 0 16px;
+        font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+        letter-spacing: -0.04em;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .step {
+        padding: 18px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .step b {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 14px;
+        border-radius: 10px;
+        color: #03111f;
+        background: linear-gradient(135deg, #fff, #7efbff 35%, #ff8cf5 70%, #fff7c7);
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .footer {
+        margin: 20px 0 0;
+        padding: 12px 4px 0;
+        color: rgba(235, 240, 255, 0.58);
+        font-size: 0.92rem;
+        text-align: center;
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1.05);
+        }
+        50% {
+          transform: translate3d(2%, 1%, 0) rotate(180deg) scale(1.12);
+        }
+        100% {
+          transform: translate3d(-2%, -1%, 0) rotate(360deg) scale(1.05);
+        }
+      }
+
+      @keyframes sheen {
+        0%,
+        45% {
+          transform: translateX(-120%);
+          opacity: 0;
+        }
+        55% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .section,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-grid {
+          padding: 28px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 20px, 1200px);
+          padding-top: 12px;
+        }
+
+        .topbar {
+          border-radius: 24px;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero-grid,
+        .workflow {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: clamp(2.8rem, 16vw, 4.2rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="Ultimate Job Automation Guide Using n8n">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Ultimate Job Automation Guide Using n8n</span>
+        </a>
+        <div class="pill">Chrome-finished automation for modern job seekers</div>
+      </header>
+
+      <section class="hero" id="home">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow"><span class="spark"></span> Holographic, iridescent, prismatic UI</div>
+            <h1>
+              Build a <span class="gradient-text">chrome-bright</span> job search engine with n8n.
+            </h1>
+            <p class="lead">
+              This landing page is tuned for high-gloss visual impact: glass surfaces, prismatic
+              edges, luminous gradients, and a futuristic workflow narrative that turns job hunting
+              into an automated system.
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#workflow">Explore the workflow</a>
+              <a class="btn btn-secondary" href="#features">See the aesthetic system</a>
+            </div>
+          </div>
+
+          <aside class="stat-panel">
+            <article class="glass-card">
+              <p class="stat"><strong>24/7</strong><span>automation coverage</span></p>
+              <p class="stat-copy">Monitor jobs, rank roles, route alerts, and move applications forward without manual friction.</p>
+            </article>
+            <article class="glass-card">
+              <p class="stat"><strong>∞</strong><span>iridescent polish</span></p>
+              <p class="stat-copy">Layered light, reflective chrome, and prism glow create a premium futuristic feel.</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <article class="feature">
+          <div class="icon">✦</div>
+          <h3>Holographic surfaces</h3>
+          <p>
+            Frosted panels, translucent overlays, and reflective edges produce a dimensional glass-metal look.
+          </p>
+        </article>
+        <article class="feature">
+          <div class="icon">◈</div>
+          <h3>Iridescent chrome</h3>
+          <p>
+            Multicolor gradients and highlight bands mimic polished chrome shifting under studio lights.
+          </p>
+        </article>
+        <article class="feature">
+          <div class="icon">✺</div>
+          <h3>Prismatic motion</h3>
+          <p>
+            Animated sheen, ambient glow, and soft mesh gradients keep the page feeling alive and premium.
+          </p>
+        </article>
+      </section>
+
+      <section class="workflow" id="workflow">
+        <h2>Automation workflow</h2>
+        <div class="steps">
+          <div class="step">
+            <b>01</b>
+            <p>Capture new job postings from the sources that matter most.</p>
+          </div>
+          <div class="step">
+            <b>02</b>
+            <p>Score opportunities by role fit, location, urgency, and priority.</p>
+          </div>
+          <div class="step">
+            <b>03</b>
+            <p>Route alerts into your inbox, tracker, or follow-up workflow instantly.</p>
+          </div>
+          <div class="step">
+            <b>04</b>
+            <p>Keep momentum with a repeatable, fully automated application engine.</p>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer">Designed as a luminous landing page for the Ultimate Job Automation Guide Using n8n.</p>
+    </main>
+  </body>
+</html>
